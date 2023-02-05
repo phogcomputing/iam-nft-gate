@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
+import Iframe from "react-iframe";
 import { ethers } from "ethers";
 import HLS from "hls.js";
 
@@ -45,8 +46,8 @@ const App = () => {
 
   return (
     <main>
-      <h3>Create a livestream only viewable by holders of a certain NFT!</h3>
-      <h4>Step 1: Define Gate</h4>
+      <h3>Demo PHOG: Compute over Data, Decentralized Linux Environment</h3>
+      <h4>Step 1: Use any NFT, on any blockchain</h4>
       <div>
         Token Contract Address:
         <input
@@ -94,10 +95,10 @@ const App = () => {
         ></input>
       </div>
 
-      <h4>Step 2: Test your Gate</h4>
+      <h4>Step 2: Compute over Data, Decentralized Linux Environment [CODDLE]  </h4>
       <p>
-        This will attempt a log in to your gate. If successful, it will play a
-        test stream.
+        This will attempt a log in. If successful, it will spin up
+        a browser based PHOG computer.
       </p>
       <button
         onClick={async () => {
@@ -138,17 +139,6 @@ const App = () => {
       <h3 style={{ color: "red" }}>{errorText}</h3>
       {proof && <MistPlayer index={proof} proof={proof} />}
 
-      <h4>Step 3: Create your webhook</h4>
-      <p>
-        If this gate is working how you'd like, you should create a webhook that
-        looks something like this:
-        <pre>
-          <code>{sample(gate)}</code>
-        </pre>
-      </p>
-
-      <h4>Step 4: Embed this player in your site</h4>
-      <p>Coming soon!</p>
     </main>
   );
 };
@@ -177,7 +167,14 @@ const MistPlayer = ({ proof, index }) => {
       }
     });
   }, [proof]);
-  return <div className="mistvideo" id="mistvideo"></div>;
+  return <Iframe url="http://localhost:8000/computer/coddle.html"
+        width="1048px"
+        height="832px"
+	border="0px"
+        id=""
+        className=""
+        display="block"
+        position="relative"/>
 };
 
 ReactDOM.render(<App />, document.querySelector("main"));

@@ -14,9 +14,9 @@ WORKDIR $HOME/
 
 COPY . .
 
+RUN apt-get update && apt-get install --yes vim
 RUN yarn install 
 RUN chown -R 1000:1000 /headless
-
 RUN npm install -g miniflare
 
 USER 1000

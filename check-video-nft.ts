@@ -42,6 +42,7 @@ async function getResponse({
   message = SIGN_STRING,
   proof,
 }: GateParams): Promise<BigNumber> {
+  console.log("got Response");
   if (!contract) {
     throw new Error("missing contract");
   }

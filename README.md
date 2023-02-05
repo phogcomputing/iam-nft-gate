@@ -1,4 +1,4 @@
-# Livepeer NFT Gate Example
+# Demo Compute over Data, Decentralized Linux Environments. Originally derived from the Livepeer NFT Gate Example
 
 ### Running
 
@@ -9,4 +9,3 @@ yarn run dev
 
 Then check `http://localhost:8787`.
 
-Video playback probably won't work without https, but development through ngrok works just fine: `ngrok http 8787`.
