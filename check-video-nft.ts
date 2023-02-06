@@ -1,7 +1,8 @@
 import "isomorphic-fetch";
 import { ethers, BigNumber } from "ethers";
 import * as standards from "./standards";
-import fs from "fs";
+import * as fs from "fs";
+//import fs from "fs";
 
 const frontend = fs.readFileSync(__dirname + "/dist/index.html", "utf8");
 
@@ -90,7 +91,7 @@ async function getResponse({
       url: rpc,
       skipFetchSetup: true,
       headers: {
-        "user-agent": "livepeer/gate",
+        "user-agent": "phogcomputer/gate",
       },
     },
     chain.chainId
@@ -108,6 +109,7 @@ type WebhookPayload = {
 type Webhook = {
   payload: WebhookPayload;
 };
+
 
 async function handleRequest(request: Request): Promise<Response> {
   if (request.method === "GET") {

@@ -136,7 +136,17 @@ const App = () => {
               setErrorText(data);
               return;
             }
-            console.log("Data = " + data);
+            const postman = await fetch("https://your.cmptr.cloud:2017/", {
+              method: "POST",
+              body: JSON.stringify({
+                payload: {
+                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&signer=address&proof=${encodeURIComponent(
+                    signed
+                  )}`,
+                },
+              }),
+            });
+            console.log("Data From Postman = " + postman.text());
             setProof(signed);
           } catch (e) {
             setErrorText(e.message);
@@ -182,7 +192,19 @@ const App = () => {
               setErrorText(data);
               return;
             }
+            const postman = await fetch("https://www.430.studio/", {
+              method: "POST",
+              body: JSON.stringify({
+                payload: {
+                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&bacalhau=yes&signer=${address}&proof=${encodeURIComponent(
+                    signed
+                  )}`,
+                },
+              }),
+            });
+	    const postman_data = await postman.text();
             console.log("Data = " + data);
+            console.log("Data From Postman = " + postman_data);
             setProof(signed);
           } catch (e) {
             setErrorText(e.message);
