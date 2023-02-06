@@ -111,12 +111,21 @@ const App = () => {
             // Prompt user for account connections
             await provider.send("eth_requestAccounts", []);
             const signer = provider.getSigner();
+            const address = ethers.utils.getAddress(await signer.getAddress());
             const signed = await signer.signMessage(gate.message);
+	    //prompt("JSON" , JSON.stringify({
+            //    payload: {
+            //      requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&proof=${encodeURIComponent(
+            //        signed
+            //      )}`,
+            //    },
+            //  }));
+
             const res = await fetch(window.location.href, {
               method: "POST",
               body: JSON.stringify({
                 payload: {
-                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&proof=${encodeURIComponent(
+                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&signer=address&proof=${encodeURIComponent(
                     signed
                   )}`,
                 },
@@ -127,7 +136,7 @@ const App = () => {
               setErrorText(data);
               return;
             }
-            console.log(data);
+            console.log("Data = " + data);
             setProof(signed);
           } catch (e) {
             setErrorText(e.message);
@@ -135,6 +144,52 @@ const App = () => {
         }}
       >
         Log in
+      </button>
+      <button
+	id="bacalhau"
+        onClick={async () => {
+          try {
+            setErrorText("");
+            const provider = new ethers.providers.Web3Provider(
+              window.ethereum,
+              "any"
+            );
+            // Prompt user for account connections
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const address = await signer.getAddress();
+            const signed = await signer.signMessage(gate.message);
+	    //prompt("JSON" , JSON.stringify({
+            //    payload: {
+            //      requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&proof=${encodeURIComponent(
+            //        signed
+            //      )}`,
+            //    },
+            //  }));
+
+            const res = await fetch(window.location.href, {
+              method: "POST",
+              body: JSON.stringify({
+                payload: {
+                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&bacalhau=yes&signer=${address}&proof=${encodeURIComponent(
+                    signed
+                  )}`,
+                },
+              }),
+            });
+            const data = await res.text();
+            if (res.status !== 200) {
+              setErrorText(data);
+              return;
+            }
+            console.log("Data = " + data);
+            setProof(signed);
+          } catch (e) {
+            setErrorText(e.message);
+          }
+        }}
+      >
+        Connect to Bacalhau
       </button>
       <h3 style={{ color: "red" }}>{errorText}</h3>
       {proof && <MistPlayer index={proof} proof={proof} />}
@@ -147,27 +202,27 @@ const MistPlayer = ({ proof, index }) => {
   useEffect(() => {
     setTimeout(() => {
       var a = function () {
-        window.mistPlay("5208b31slogl2gw4", {
-          target: document.getElementById("mistvideo"),
-          urlappend: `?proof=${proof}`,
+        // feb 5 2023 window.mistPlay("5208b31slogl2gw4", {
+        // feb 5 2023   target: document.getElementById("mistvideo"),
+         // feb 5 2023  urlappend: `?proof=${proof}`,
           // forcePlayer: "hlsjs",
           // forceType: "html5/application/vnd.apple.mpegurl",
           // forcePriority: {
           //   source: [["type", ["html5/application/vnd.apple.mpegurl"]]],
           // },
-        });
+        // feb 5 2023 });
       };
       if (!window.mistplayers) {
-        var p = document.createElement("script");
-        p.src = "https://playback.livepeer.engineering/player.js";
-        document.head.appendChild(p);
-        p.onload = a;
+      // feb 5 2023   var p = document.createElement("script");
+      // feb 5 2023   p.src = "https://playback.livepeer.engineering/player.js";
+      // feb 5 2023   document.head.appendChild(p);
+      // feb 5 2023   p.onload = a;
       } else {
         a();
       }
     });
   }, [proof]);
-  return <Iframe url="http://localhost:8000/computer/coddle.html"
+  return <Iframe url="https://your.cmptr.cloud:2017/computer/coddle.html"
         width="1048px"
         height="832px"
 	border="0px"

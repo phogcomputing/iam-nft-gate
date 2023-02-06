@@ -34,6 +34,8 @@ type GateParams = {
   network?: string;
   message?: string;
   proof?: string;
+  bacalhau?: string;
+  signer?: string;
 };
 async function getResponse({
   contract,
@@ -41,8 +43,11 @@ async function getResponse({
   network = "eth",
   message = SIGN_STRING,
   proof,
+  bacalhau,
+  signer,
 }: GateParams): Promise<BigNumber> {
-  console.log("got Response");
+  console.log("got Response: bacalhau = " + bacalhau);
+  console.log("got Response: signer   = " + signer);
   if (!contract) {
     throw new Error("missing contract");
   }
@@ -127,10 +132,17 @@ async function handleRequest(request: Request): Promise<Response> {
   }
   const payloadUrl = new URL(requestUrl);
   const proof = payloadUrl.searchParams.get("proof");
+  const bacalhau = payloadUrl.searchParams.get("bacalhau");
+  const signer = payloadUrl.searchParams.get("signer")) ;
   if (!proof) {
     return new Response("`proof` query parameter missing from payload url");
   }
+  if (!signer) {
+    return new Response("`signer` query parameter missing from payload url");
+  }
   gateParams.proof = proof;
+  gateParams.signer = signer;
+  gateParams.bacalhau = !bacalhau ? "no" : bacalhau;
 
   try {
     const balance = await getResponse(gateParams);
@@ -157,6 +169,8 @@ if (typeof addEventListener === "function") {
     network: "matic",
     proof:
       "0xcf3708006566be50200fb4257f97e36f1fe3ad2c34a2c03d6395aa71b81ed8186af1432d1aa4e43284dfb2bf1e3b0f0b063ad461172f116685b8e842953cb2b71b",
+    bacalhau: "no",
+    signer: "",
   })
     .then((x) => console.log(x.toNumber()))
     .catch((...x) => console.log(x));
