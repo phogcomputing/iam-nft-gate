@@ -101,61 +101,6 @@ const App = () => {
         a browser based PHOG computer.
       </p>
       <button
-        onClick={async () => {
-          try {
-            setErrorText("");
-            const provider = new ethers.providers.Web3Provider(
-              window.ethereum,
-              "any"
-            );
-            // Prompt user for account connections
-            await provider.send("eth_requestAccounts", []);
-            const signer = provider.getSigner();
-            const address = ethers.utils.getAddress(await signer.getAddress());
-            const signed = await signer.signMessage(gate.message);
-	    //prompt("JSON" , JSON.stringify({
-            //    payload: {
-            //      requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&proof=${encodeURIComponent(
-            //        signed
-            //      )}`,
-            //    },
-            //  }));
-
-            const res = await fetch(window.location.href, {
-              method: "POST",
-              body: JSON.stringify({
-                payload: {
-                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&signer=address&proof=${encodeURIComponent(
-                    signed
-                  )}`,
-                },
-              }),
-            });
-            const data = await res.text();
-            if (res.status !== 200) {
-              setErrorText(data);
-              return;
-            }
-            const postman = await fetch("https://your.cmptr.cloud:2017/", {
-              method: "POST",
-              body: JSON.stringify({
-                payload: {
-                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&signer=address&proof=${encodeURIComponent(
-                    signed
-                  )}`,
-                },
-              }),
-            });
-            console.log("Data From Postman = " + postman.text());
-            setProof(signed);
-          } catch (e) {
-            setErrorText(e.message);
-          }
-        }}
-      >
-        Log in
-      </button>
-      <button
 	id="bacalhau"
         onClick={async () => {
           try {
@@ -192,15 +137,9 @@ const App = () => {
               setErrorText(data);
               return;
             }
-            const postman = await fetch("https://www.430.studio/", {
-              method: "POST",
-              body: JSON.stringify({
-                payload: {
-                  requestUrl: `https://example.com/hls/fake-stream.m3u8?streamId=fake-stream&bacalhau=yes&signer=${address}&proof=${encodeURIComponent(
-                    signed
-                  )}`,
-                },
-              }),
+            const postman = await fetch(`https://your.computer.rentals:2015/?signer=${address}`, {
+              method: "GET",
+	      mode: 'no-cors',
             });
 	    const postman_data = await postman.text();
             console.log("Data = " + data);
