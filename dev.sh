@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker run -v $(pwd):/headless/repo \
+docker run -u 0 -v $(pwd):/headless/repo \
 	--rm --name gateway -it -p 8787:8787 gateway /bin/bash

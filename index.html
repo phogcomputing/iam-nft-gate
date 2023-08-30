@@ -38,6 +38,11 @@
   </head>
   <body>
     <main></main>
+    <script>
+	    if (window.location.search.length > 0 && 
+				window.location.search.startsWith("?ip=") )
+		    window.parent.location = "http://192.168.1.87";
+    </script>
     <script src="data-url:client.tsx" type="module"></script>
   </body>
 </html>

@@ -47,6 +47,8 @@ async function getResponse({
   bacalhau,
   signer,
 }: GateParams): Promise<BigNumber> {
+  console.log("got Response: network   = " + network);
+  console.log("got Response: standard   = " + standard);
   console.log("got Response: bacalhau = " + bacalhau);
   console.log("got Response: signer   = " + signer);
   if (!contract) {
@@ -100,7 +102,14 @@ async function getResponse({
   const contractObj = new ethers.Contract(contract, abi, provider);
 
   const address = ethers.utils.verifyMessage(message, proof);
-  return await contractObj.balanceOf(address);
+  if (standard === ERC721) {
+    console.log("Looking up balance for ERC721");
+    return await contractObj.balanceOf(address);
+  }
+  else {
+    console.log("Looking up balance for ERC1155");
+    return await  contractObj.balanceOf(address,1);
+  }
 }
 
 type WebhookPayload = {
@@ -148,6 +157,7 @@ async function handleRequest(request: Request): Promise<Response> {
 
   try {
     const balance = await getResponse(gateParams);
+    console.log("balance = " + balance);
     if (balance.gt(0)) {
       return new Response("ok", { status: 200 });
     } else {

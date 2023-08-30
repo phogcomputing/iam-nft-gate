@@ -183,7 +183,7 @@ const MistPlayer = ({ proof, index }) => {
       }
     });
   }, [proof]);
-  return <Iframe url="https://your.cmptr.cloud:2017/computer/coddle.html"
+  return <Iframe url="https://coboodle.co/?ip="
         width="1048px"
         height="832px"
 	border="0px"
